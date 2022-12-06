@@ -2,7 +2,6 @@ require "sinatra"
 require "sinatra/reloader"
 require "sinatra/content_for"
 require "tilt/erubis"
-require "redcarpet"
 
 require_relative "twenty_one"
 
@@ -19,18 +18,13 @@ def reset_game
   end
 end
 
-def render_markdown(text)
-  markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
-  markdown.render(text)
-end
-
 before do
   @game = session[:game]
 end
 
 get "/" do
-  file = File.read("./data/rules.md")
-  @rules = render_markdown(file)
+  @rules = File.readlines("./data/rules.txt")
+
   erb :home
 end
 
@@ -54,12 +48,11 @@ post "/game/player/choice" do
   choice = params[:choice]
   @game.hit(@game.player) if choice == "hit"
 
-  if choice == "stay" || @game.player.total == 21
+  if choice == "stay" || @game.player.total >= 21
     redirect "/game/result" if @game.game_over?
+
     @cards = @game.cards_hash(facedown: false)
     erb :dealer, layout: :game_layout
-  elsif @game.player.busted?
-    redirect "/game/result"
   else
     @cards = @game.cards_hash(facedown: true)
     erb :player, layout: :game_layout

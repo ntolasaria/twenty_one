@@ -1,8 +1,0 @@
-### Game Rules:
-
-- Dealer deals two cards each to the player and themselves
-- The second card of the dealer is facedown till the player's turn is completed
-- Player chooses from option to `Hit` or `Stay`. If, the player choses `Hit`, one card is dealt to the player
-- If the score exceeds 21, player is busted and dealer wins
-- Dealer, then takes turns and cannot `Hit` above the total of 17
-- The player closer to the total 21 wins, if the total are the same it's a tie
