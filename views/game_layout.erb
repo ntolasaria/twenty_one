@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+  <title>Twenty-One</title>
+  <link rel="stylesheet" href="/stylesheets/app.css" type="text/css">
+  <body>
+    <%= yield_content :header %>
+    <div class="dealer-cards">
+      <p>Dealer's cards: </p>
+      <% @cards[:dealer][:cards].each do |card| %>
+        <img src="/images/cards/<%= card %>.png" alt="<%= card %>" width="100" height="145.2">
+      <% end %>
+      <% if @cards[:dealer][:total] %>
+        <p>Total : <%= @cards[:dealer][:total] %></p>
+      <% end %>
+    </div>
+    <div class="player-cards">
+      <p>Player's cards:</p>
+      <% @cards[:player][:cards].each do |card| %>
+        <img src="/images/cards/<%= card %>.png" alt="<%= card %>" width="100" height="145.2">
+      <% end %>
+      <p>Total : <%= @cards[:player][:total] %></p>
+    </div>
+    <%= yield %>
+  </body>
+</html>

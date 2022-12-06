@@ -1,0 +1,25 @@
+body {
+  padding: 1em;
+  font-family: sans-serif;
+}
+
+.button p {
+  margin: 5px;
+  font-size: 16px;
+}
+
+.dealer-cards p {
+  font-size: 18px;
+  font-weight: 600;
+
+}
+
+.player-cards p {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.result p {
+  font-size: 18px;
+  font-weight: 600;
+}

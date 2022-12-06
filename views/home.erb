@@ -1,0 +1,10 @@
+<p>
+  <%= @rules %>
+</p>
+<% content_for :footer_links do %>
+  <div class="button">
+    <form action="/game/new" method="get">
+      <button type="submit"><p>Start Game</p></button>
+    </form>
+  </div>
+<% end %>
