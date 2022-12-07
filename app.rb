@@ -18,14 +18,45 @@ def reset_game
   end
 end
 
+def logged_in?
+  @game.player.name
+end
+
+def require_login
+  redirect "/login" unless logged_in?
+end
+
 before do
   @game = session[:game]
 end
 
 get "/" do
   @rules = File.readlines("./data/rules.txt")
+  reset_game
 
   erb :home
+end
+
+get "/login" do
+  if logged_in?
+    erb :new_game
+  else
+    erb :login
+  end
+end
+# separate login and buy in page, when user gets bankrupt 
+# redirects to buy in page
+
+post "/game/bet" do
+  name = params[:name].strip
+  amount = params[:amount].strip
+  error = @game.validate_and_set_name_amount(name, amount)
+  if error
+    session[:error] = error
+    erb :login
+  else
+    redirect "/game/new"
+  end
 end
 
 get "/game/new" do
@@ -34,7 +65,22 @@ get "/game/new" do
   erb :new_game
 end
 
-post "/game/player" do
+post "/game" do
+  require_login
+
+  bet = params[:bet].to_i
+  error = @game.validate_and_place_bet(bet)
+  if error
+    session[:error] = error
+    erb :new_game
+  else
+    redirect "/game"
+  end
+end
+
+get "/game" do
+  require_login
+
   if @game.player.show_cards.empty?
     @game.deal_initial_cards
   end
@@ -44,15 +90,17 @@ post "/game/player" do
   erb :player, layout: :game_layout
 end
 
-post "/game/player/choice" do
+post "/game/player" do
+  require_login
+
   choice = params[:choice]
   @game.hit(@game.player) if choice == "hit"
 
-  if choice == "stay" || @game.player.total >= 21
-    redirect "/game/result" if @game.game_over?
-
+  if choice == "stay" || @game.player.total == 21
     @cards = @game.cards_hash(facedown: false)
     erb :dealer, layout: :game_layout
+  elsif @game.player.busted?
+    redirect "/game/result"
   else
     @cards = @game.cards_hash(facedown: true)
     erb :player, layout: :game_layout
@@ -60,7 +108,9 @@ post "/game/player/choice" do
 end
 
 post "/game/dealer" do
-  @game.hit(@game.dealer)
+  require_login
+
+  @game.hit(@game.dealer) unless @game.game_over?
 
   redirect "/game/result" if @game.game_over?
 
@@ -70,8 +120,17 @@ post "/game/dealer" do
 end
 
 get "/game/result" do
+  require_login
+
   @cards = @game.cards_hash(facedown: false)
   @result = @game.round_over_message
+  @game.settle_bet
 
   erb :result, layout: :game_layout
+end
+
+post "/logout" do
+  session.clear
+  reset_game
+  redirect "/login"
 end

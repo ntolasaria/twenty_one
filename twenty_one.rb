@@ -52,8 +52,16 @@ end
 
 
 class Player
+  attr_reader :wallet, :name
+
   def initialize
     reset
+    @name = nil
+    @wallet = 0
+  end
+
+  def set_name(name)
+    @name = name
   end
 
   def deal(card)
@@ -81,10 +89,13 @@ class Player
     @cards.map(&:to_s)
   end
 
+  def add(amount)
+    @wallet += amount
+  end
+
   def reset
     @cards = []
   end
-
 end
 
 class Dealer < Player
@@ -98,17 +109,19 @@ class Dealer < Player
 end
 
 class TwentyOneGame
-  attr_reader :player, :dealer, :deck
+  attr_reader :player, :dealer, :deck, :player_turn, :bet
 
   def initialize
     @player = Player.new
     @dealer = Dealer.new
     @deck = Deck.new
+    @player_turn = true
   end
 
   def reset_players
     player.reset
     dealer.reset
+    @bet = nil
   end
 
   def cards_hash(facedown: false)
@@ -139,20 +152,52 @@ class TwentyOneGame
 
   def round_over_message
     if player.busted?
-      {winner: dealer, message: "Player busts!, Dealer wins!"}
+      {winner: dealer, message: "Player busts! Dealer wins! Player loses #{bet}"}
     elsif dealer.busted?
-      {winner: player, message: "Dealer busts!, Player wins!"}
+      {winner: player, message: "Dealer busts! Player wins #{bet}!"}
     elsif player.total > dealer.total
-      {winner: player, message: "Player wins!"}
+      {winner: player, message: "Player wins #{bet}!"}
     elsif dealer.total > player.total
-      {winner: dealer, message: "Dealer wins!" }
+      {winner: dealer, message: "Dealer wins! Player loses #{bet}" }
     else
       {winner: nil, message: "Push! The totals are equal"}
     end
   end
 
+  def settle_bet
+    if round_over_message[:winner] == player
+      player.add(@bet * 2)
+    elsif round_over_message[:winner] == nil
+      player.add(@bet)
+    end
+  end
+
   def game_over?
     player.busted? || dealer.busted? || dealer.total >= 17 || dealer.total > player.total
+  end
+
+  def validate_and_place_bet(amount)
+    if player.wallet >= amount && amount > 0 && amount.to_s.to_i == amount
+      @bet = amount.to_i
+      place_bet
+      nil
+    else
+      "Please enter a valid amount to bet"
+    end
+  end
+
+  def place_bet
+    player.add(-@bet) if @bet
+  end
+
+  def validate_and_set_name_amount(name, amount)
+    if name.size < 1 || amount.to_i.to_s != amount
+      "Please enter a valid name and a whole number!"
+    else
+      player.set_name(name)
+      player.add(amount.to_i)
+      nil
+    end
   end
 end
 

@@ -1,8 +1,8 @@
 <% content_for :header do %>
-  <h3>Player's Turn:</h3>
+  <h3><%= @game.player.name %>'s Turn:</h3>
 <% end %>
 <div class="button">
-  <form action="/game/player/choice" method="post">
+  <form action="/game/player" method="post">
     <button type="submit" name="choice" value="hit"><p>Hit</p></button>
     <button type="submit" name="choice" value="stay"><p>Stay</p></button>
   </form>

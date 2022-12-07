@@ -1,7 +1,14 @@
 <h4>You can now start a new game</h4>
 <p>Press the `deal` button to start the game</p>
 <div class="button">
-  <form action="/game/player" method="post">
-    <button type="submit"><p>Deal</p></button>
+  <form action="/game" method="post">
+  <label for="bet">Amount:</label>
+  <input type="text" name="bet" value="<%= params[:bet] %>">
+    <button type="submit">
+      <p>Place bet and deal</p>
+    </button>
   </form>
 </div>
+<% content_for :header do %>
+  <p><%= @game.player.name %>'s wallet: <%= @game.player.wallet %></p>
+<% end %>

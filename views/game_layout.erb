@@ -3,6 +3,9 @@
   <title>Twenty-One</title>
   <link rel="stylesheet" href="/stylesheets/app.css" type="text/css">
   <body>
+    <p>Wallet balance:  <%= @game.player.wallet %> |
+      Current bet: <%= @game.bet %>
+    </p>
     <%= yield_content :header %>
     <div class="dealer-cards">
       <p>Dealer's cards: </p>
@@ -14,12 +17,19 @@
       <% end %>
     </div>
     <div class="player-cards">
-      <p>Player's cards:</p>
+      <p><%= @game.player.name %>'s cards:</p>
       <% @cards[:player][:cards].each do |card| %>
         <img src="/images/cards/<%= card %>.png" alt="<%= card %>" width="100" height="145.2">
       <% end %>
       <p>Total : <%= @cards[:player][:total] %></p>
     </div>
     <%= yield %>
+    <br />
+    <br />
+    <div class="button">
+      <form action="/logout" method="post">
+        <button type="submit"><p>Logout</p></button>
+      </form>
+    </div>
   </body>
 </html>
