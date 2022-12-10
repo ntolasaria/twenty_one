@@ -19,7 +19,19 @@ body {
   font-weight: 600;
 }
 
-.result p {
+.result {
   font-size: 18px;
   font-weight: 600;
+}
+
+#player {
+  color: olive;
+}
+
+#dealer {
+  color: crimson;
+}
+
+#push {
+  color: gold;
 }

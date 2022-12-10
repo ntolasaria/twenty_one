@@ -122,6 +122,7 @@ class TwentyOneGame
     player.reset
     dealer.reset
     @bet = nil
+    @payout = nil
   end
 
   def cards_hash(facedown: false)
@@ -152,24 +153,26 @@ class TwentyOneGame
 
   def round_over_message
     if player.busted?
-      {winner: dealer, message: "Player busts! Dealer wins! Player loses #{bet}"}
+      {winner: "dealer", message: "Player busts! Dealer wins! Player loses #{bet}"}
     elsif dealer.busted?
-      {winner: player, message: "Dealer busts! Player wins #{bet}!"}
+      {winner: "player", message: "Dealer busts! Player wins #{bet}!"}
     elsif player.total > dealer.total
-      {winner: player, message: "Player wins #{bet}!"}
+      {winner: "player", message: "Player wins #{bet}!"}
     elsif dealer.total > player.total
-      {winner: dealer, message: "Dealer wins! Player loses #{bet}" }
+      {winner: "dealer", message: "Dealer wins! Player loses #{bet}" }
     else
-      {winner: nil, message: "Push! The totals are equal"}
+      {winner: "push", message: "Push! The totals are equal"}
     end
   end
 
   def settle_bet
-    if round_over_message[:winner] == player
+    return if @payout
+    if round_over_message[:winner] == "player"
       player.add(@bet * 2)
-    elsif round_over_message[:winner] == nil
+    elsif round_over_message[:winner] == "push"
       player.add(@bet)
     end
+    @payout = true
   end
 
   def game_over?
