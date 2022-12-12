@@ -15,7 +15,7 @@ class Card
       11
     else
       rank.to_i
-    end 
+    end
   end
 
   def to_s
@@ -49,7 +49,6 @@ class Deck
     @cards.shuffle!
   end
 end
-
 
 class Player
   attr_reader :wallet, :name
@@ -153,30 +152,32 @@ class TwentyOneGame
 
   def round_over_message
     if player.busted?
-      {winner: "dealer", message: "Player busts! Dealer wins! Player loses #{bet}"}
+      { winner: "dealer", message: "Player busts! Dealer wins! Player loses #{bet}" }
     elsif dealer.busted?
-      {winner: "player", message: "Dealer busts! Player wins #{bet}!"}
+      { winner: "player", message: "Dealer busts! Player wins #{bet}!" }
     elsif player.total > dealer.total
-      {winner: "player", message: "Player wins #{bet}!"}
+      { winner: "player", message: "Player wins #{bet}!" }
     elsif dealer.total > player.total
-      {winner: "dealer", message: "Dealer wins! Player loses #{bet}" }
+      { winner: "dealer", message: "Dealer wins! Player loses #{bet}" }
     else
-      {winner: "push", message: "Push! The totals are equal"}
+      { winner: "push", message: "Push! The totals are equal" }
     end
   end
 
   def settle_bet
     return if @payout
-    if round_over_message[:winner] == "player"
-      player.add(@bet * 2)
-    elsif round_over_message[:winner] == "push"
-      player.add(@bet)
+
+    case round_over_message[:winner]
+    when "player" then player.add(@bet * 2)
+    when "push"   then player.add(@bet)
     end
+
     @payout = true
   end
 
   def game_over?
-    player.busted? || dealer.busted? || dealer.total >= 17 || dealer.total > player.total
+    player.busted? || dealer.busted? || dealer.total >= 17 ||
+      dealer.total > player.total
   end
 
   def validate_and_place_bet(amount)
@@ -193,82 +194,21 @@ class TwentyOneGame
     player.add(-@bet) if @bet
   end
 
-  def validate_and_set_name_amount(name, amount)
-    if name.size < 1 || amount.to_i.to_s != amount
-      "Please enter a valid name and a whole number!"
+  def validate_and_set_name(name)
+    if name.empty?
+      "Please enter a valid name!"
     else
       player.set_name(name)
-      player.add(amount.to_i)
+      nil
+    end
+  end
+
+  def validate_and_buyin(amount_str)
+    if amount_str.to_i.to_s != amount_str && amount_str.to_i <= 0
+      "Please enter a valid amount"
+    else
+      player.add(amount_str.to_i)
       nil
     end
   end
 end
-
-  # def display_cards_and_total(current_player)
-  #   puts "#{current_player.class} has:"
-  #   puts current_player.show_cards
-  #   puts "For a total of #{current_player.total}"
-  # end
-
-  # def display_initial_cards
-  #   puts "Dealer has:"
-  #   puts dealer.show_initial_cards
-  #   puts
-  #   puts "Player has: "
-  #   puts player.show_cards
-  #   puts "For a total of #{player.total}"
-  #   puts
-  # end
-
-
-
-  # def player_takes_turns
-  #   player_choice = nil
-  #   until player.busted? do
-  #     puts "Would you like to stay(s) or hit(h)?"
-  #     player_choice = gets.chomp
-  #     break if player_choice.downcase.start_with?("s")
-  #     player.deal(deck.pop)
-  #     display_cards_and_total(player)
-  #   end
-  # end
-
-  # def dealer_takes_turns
-  #   while dealer.total < 17
-  #     dealer.deal(deck.pop)
-  #   end
-  # end
-
-  # def cards_hash(current_player, show_status: "normal")
-  #   if show_status == "normal"
-  #     { cards: current_player.show_cards, total: current_player.total }
-  #   elsif show_status == "facedown"
-  #     { cards: current_player.show_initial_cards, total: nil }
-  #   end
-  # end
-
-  # def show_final_cards_and_result
-  #   puts "======================="
-  #   display_cards_and_total(player)
-  #   puts
-  #   display_cards_and_total(dealer)
-  #   puts
-  #   puts WINNING_LINE[winner]
-  #   reset_players
-  # # end
-
-  # def winner
-  #   if player.busted?
-  #     :dealer
-  #   elsif dealer.busted?
-  #     :player
-  #   elsif player.total > dealer.total
-  #     :player
-  #   elsif dealer.total > player.total
-  #     :dealer
-  #   else
-  #     :tie
-  #   end
-  # end
-
-# TwentyOneGame.new.play

@@ -4,11 +4,23 @@
     <p id="<%= @result[:winner] %>"><%= @result[:message] %></p>
   </div>
 <% end %>
-
-<div class="button">
-  <form action="/game/new" method="get">
-    <button type="submit">
-      <p>New Game</p>
-    </button>
-  </form>
-</div>
+<% if @game.player.wallet == 0 %>
+  <div class="dealer">
+    <p id="dealer"><%= @game.player.name %> is bankrupt!</p>
+  </div>
+  <div class="button">
+    <form action="/buyin" method="get">
+      <button type="submit">
+        <p>Buy In</p>
+      </button>
+    </form>
+  </div>
+<% else %>
+  <div class="button">
+    <form action="/game/new" method="get">
+      <button type="submit">
+        <p>New Game</p>
+      </button>
+    </form>
+  </div>
+<% end %>

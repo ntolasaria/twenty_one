@@ -1,11 +1,8 @@
 
 <div class="button">
-  <form action="/game/bet" method="post">
+  <form action="/login" method="post">
     <label for="name">Please enter your name:</label>
     <input type="text" name="name" value="<%= params[:name] %>" placeholder="name...">
-    <br />
-    <label for="amount">Enter the amount you want to buy in:</label>
-    <input type="text" name="amount" value="<%= params[:amount] %>" placeholder="amount...">
     <br />
     <button type="submit">
       <p>Start game</p>

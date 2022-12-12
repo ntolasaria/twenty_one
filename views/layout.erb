@@ -11,5 +11,14 @@
     <br />
     <br />
     <%= yield_content :footer_links %>
+    <% if logged_in? %>
+      <div class="button">
+        <form action="/logout" method="post">
+          <button type="submit">
+            <p>Logout</p>
+          </button>
+        </form>
+      </div>
+    <% end %>
   </body>
 </html>

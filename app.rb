@@ -39,21 +39,33 @@ end
 
 get "/login" do
   if logged_in?
-    erb :new_game
+    erb :buyin
   else
     erb :login
   end
 end
-# separate login and buy in page, when user gets bankrupt 
-# redirects to buy in page
 
-post "/game/bet" do
+post "/login" do
   name = params[:name].strip
-  amount = params[:amount].strip
-  error = @game.validate_and_set_name_amount(name, amount)
+  error = @game.validate_and_set_name(name)
   if error
     session[:error] = error
     erb :login
+  else
+    redirect "/buyin"
+  end
+end
+
+get "/buyin" do
+  erb :buyin
+end
+
+post "/buyin" do
+  amount = params[:amount]
+  error = @game.validate_and_buyin(amount)
+  if error
+    session[:error] = error
+    erb :buyin
   else
     redirect "/game/new"
   end

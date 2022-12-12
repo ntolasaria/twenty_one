@@ -1,0 +1,24 @@
+<div class="button">
+  <form action="/buyin" method="post">
+    <label for="amount">Please enter the amount to buyin:</label>
+    <input type="text" name="amount" value="<%= params[:amount] %>">
+    <button type="submit">
+      <p>Buy</p>
+    </button>
+  </form>
+</div>
+<% if @game.player.wallet > 0 %>
+  <div class="button">
+    <form action="/game/new" method="get">
+      <label>Proceed with current balance: </label>
+      <button type="submit">
+        <p>Deal</p>
+      </button>
+    </form>
+  </div>
+<% end %>
+<div>
+</div>
+<% content_for :header do %>
+  <p>Current wallet balance: <%= @game.player.wallet %></p>
+<% end %>
