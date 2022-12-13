@@ -5,3 +5,6 @@ gem "sinatra-contrib"
 gem "erubis"
 
 gem "webrick"
+
+gem "minitest"
+gem "rack-test"

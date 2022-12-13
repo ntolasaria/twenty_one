@@ -19,7 +19,7 @@ def reset_game
 end
 
 def logged_in?
-  @game.player.name
+  session[:player]
 end
 
 def require_login
@@ -49,14 +49,18 @@ post "/login" do
   name = params[:name].strip
   error = @game.validate_and_set_name(name)
   if error
+    status 422
     session[:error] = error
     erb :login
   else
+    session[:player] = name
     redirect "/buyin"
   end
 end
 
 get "/buyin" do
+  require_login
+
   erb :buyin
 end
 
@@ -64,6 +68,7 @@ post "/buyin" do
   amount = params[:amount]
   error = @game.validate_and_buyin(amount)
   if error
+    status 422
     session[:error] = error
     erb :buyin
   else
@@ -83,6 +88,7 @@ post "/game" do
   bet = params[:bet].to_i
   error = @game.validate_and_place_bet(bet)
   if error
+    status 422
     session[:error] = error
     erb :new_game
   else
