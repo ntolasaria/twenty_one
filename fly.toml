@@ -11,9 +11,6 @@ processes = []
 [env]
   PORT = "8080"
 
-[processes]
-  app = "bundle exec puma -p 8080"
-
 [experimental]
   allowed_public_ports = []
   auto_rollback = true
@@ -21,7 +18,7 @@ processes = []
 [[services]]
   http_checks = []
   internal_port = 8080
-  processes = ["app"]
+  processes = ["web"]
   protocol = "tcp"
   script_checks = []
   [services.concurrency]
