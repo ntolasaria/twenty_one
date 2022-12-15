@@ -16,7 +16,7 @@ processes = []
   auto_rollback = true
 
 [processes]
-web = "bundle exec puma -p 8080"
+web = "bundle exec puma"
 
 [[services]]
   http_checks = []
