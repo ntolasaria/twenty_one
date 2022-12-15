@@ -16,12 +16,12 @@ processes = []
   auto_rollback = true
 
 [processes]
-  web = "bundle exec puma"
+  app = "bundle exec puma -p 8080"
 
 [[services]]
   http_checks = []
   internal_port = 8080
-  processes = ["web"]
+  processes = ["app"]
   protocol = "tcp"
   script_checks = []
   [services.concurrency]
