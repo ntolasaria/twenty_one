@@ -6,7 +6,4 @@ gem "erubis"
 
 gem "minitest"
 gem "rack-test"
-
-group :production do
-  gem "puma"
-end
+gem "puma"
