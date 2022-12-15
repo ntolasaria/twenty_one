@@ -6,4 +6,4 @@ gem "erubis"
 
 gem "minitest"
 gem "rack-test"
-gem "webrick"
+gem "puma"

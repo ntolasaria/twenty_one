@@ -5,6 +5,9 @@ GEM
     erubis (2.7.0)
     minitest (5.16.3)
     multi_json (1.15.0)
+    nio4r (2.5.8)
+    puma (6.0.0)
+      nio4r (~> 2.0)
     rack (1.6.13)
     rack-protection (1.5.5)
       rack
@@ -22,7 +25,6 @@ GEM
       sinatra (~> 1.4.0)
       tilt (>= 1.3, < 3)
     tilt (2.0.11)
-    webrick (1.7.0)
 
 PLATFORMS
   arm64-darwin-21
@@ -31,10 +33,10 @@ PLATFORMS
 DEPENDENCIES
   erubis
   minitest
+  puma
   rack-test
   sinatra (~> 1.4.7)
   sinatra-contrib
-  webrick
 
 BUNDLED WITH
    2.3.22
