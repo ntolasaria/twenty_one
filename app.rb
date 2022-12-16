@@ -1,5 +1,4 @@
 require "sinatra"
-require "sinatra/reloader" if development?
 require "sinatra/content_for"
 require "tilt/erubis"
 require "bundler/setup"
@@ -116,14 +115,18 @@ post "/game/player" do
   @game.hit(@game.player) if choice == "hit"
 
   if choice == "stay" || @game.player.total == 21
-    @cards = @game.cards_hash(facedown: false)
-    erb :dealer, layout: :game_layout
+    redirect "/game/dealer"
   elsif @game.player.busted?
     redirect "/game/result"
   else
-    @cards = @game.cards_hash(facedown: true)
-    erb :player, layout: :game_layout
+    redirect "/game/player"
   end
+end
+
+get "/game/player" do
+  @cards = @game.cards_hash(facedown: true)
+
+  erb :player, layout: :game_layout
 end
 
 post "/game/dealer" do
@@ -133,6 +136,10 @@ post "/game/dealer" do
 
   redirect "/game/result" if @game.game_over?
 
+  redirect "/game/dealer"
+end
+
+get "/game/dealer" do
   @cards = @game.cards_hash(facedown: false)
 
   erb :dealer, layout: :game_layout
