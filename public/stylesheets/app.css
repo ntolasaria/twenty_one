@@ -1,6 +1,9 @@
 body {
   padding: 1em;
   font-family: sans-serif;
+  align-items: center;
+  text-align: center;
+  background-color: aliceblue;
 }
 
 .button p {
@@ -33,5 +36,5 @@ body {
 }
 
 #push {
-  color: gold;
+  color: yellow;
 }
