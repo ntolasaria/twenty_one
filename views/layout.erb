@@ -2,15 +2,15 @@
   <title>Twenty-One</title>
   <link rel="stylesheet" href="/stylesheets/app.css" type="text/css">
   <body>
-    <%= yield_content :header %>
+    <%== yield_content :header %>
     <% if session[:error] %>
       <p><%= session.delete(:error) %></p>
     <% end %>
     <h2>Welcome to Twenty-One</h2>
-    <%= yield %>
+    <%== yield %>
     <br />
     <br />
-    <%= yield_content :footer_links %>
+    <%== yield_content :footer_links %>
     <% if logged_in? %>
       <div class="button">
         <form action="/logout" method="post">

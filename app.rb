@@ -10,6 +10,10 @@ configure do
   set :session_secret, 'secret'
 end
 
+configure do
+  set :erb, :escape_html => true
+end
+
 def reset_game
   if session[:game]
     session[:game].reset_players

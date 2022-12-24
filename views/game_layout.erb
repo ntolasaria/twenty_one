@@ -6,7 +6,7 @@
     <p>Wallet balance:  <%= @game.player.wallet %> |
       Current bet: <%= @game.bet %>
     </p>
-    <%= yield_content :header %>
+    <%== yield_content :header %>
     <div class="dealer-cards">
       <p>Dealer's cards: </p>
       <% @cards[:dealer][:cards].each do |card| %>
@@ -23,7 +23,7 @@
       <% end %>
       <p>Total : <%= @cards[:player][:total] %></p>
     </div>
-    <%= yield %>
+    <%== yield %>
     <br />
     <br />
     <div class="button">
