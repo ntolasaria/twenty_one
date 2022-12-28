@@ -181,7 +181,7 @@ class TwentyOneGame
   end
 
   def validate_and_place_bet(amount)
-    if player.wallet >= amount && amount > 0 && amount.to_s.to_i == amount
+    if player.wallet >= amount.to_i && amount.to_i > 0 && amount.to_i.to_s == amount
       @bet = amount.to_i
       place_bet
       nil
@@ -204,7 +204,7 @@ class TwentyOneGame
   end
 
   def validate_and_buyin(amount_str)
-    if amount_str.to_i.to_s != amount_str && amount_str.to_i <= 0
+    if amount_str.to_i.to_s != amount_str || amount_str.to_i <= 0
       "Please enter a valid amount"
     else
       player.add(amount_str.to_i)

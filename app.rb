@@ -89,7 +89,7 @@ end
 post "/game" do
   require_login
 
-  bet = params[:bet].to_i
+  bet = params[:bet]
   error = @game.validate_and_place_bet(bet)
   if error
     status 422
